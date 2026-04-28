@@ -1,0 +1,47 @@
+- name: Check if config file exists
+  stat:
+    path: "{{ app_config.path }}"
+  register: app_conf_stat
+
+- name: Read current config (before)
+  slurp:
+    path: "{{ app_config.path }}"
+  register: app_conf_before
+  when: app_conf_stat.stat.exists
+
+- name: Normalize configuration content before remediation
+  set_fact:
+    app_conf_before_content: >-
+      {{
+        (app_conf_before.content | b64decode)
+        if app_conf_stat.stat.exists
+        else ''
+      }}
+
+- name: Ensure application configuration is compliant
+  template:
+    src: "{{ app_config.template }}"
+    dest: "{{ app_config.path }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "{{ app_file_mode }}"
+  register: app_conf_result
+
+- name: Read configuration after remediation
+  slurp:
+    path: "{{ app_config.path }}"
+  register: app_conf_after
+
+- name: Normalize configuration content after remediation
+  set_fact:
+    app_conf_after_content: "{{ app_conf_after.content | b64decode }}"
+
+- name: Build configuration drift report data
+  set_fact:
+    app_conf_report:
+      host: "{{ inventory_hostname }}"
+      task: "Ensure application configuration is compliant"
+      config_file: "{{ app_config.path }}"
+      drifted: "{{ app_conf_before_content != app_conf_after_content }}"
+      before: "{{ app_conf_before_content }}"
+      after: "{{ app_conf_after_content }}"

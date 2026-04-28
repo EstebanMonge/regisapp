@@ -40,6 +40,7 @@ class CallbackModule(CallbackBase):
                 "host": report["host"],
                 "task": report["task"],
                 "status": "changed",
+                "config_file": report["config_file"],
                 "before": report["before"],
                 "after": report["after"]
             })

@@ -2,8 +2,10 @@
 # defaults file for regisapp
 app_user: regisapp
 app_group: regisapp
-app_config_path: /etc/demo-app/app.conf
-app_config_dir: /etc/demo-app/
+app_config_paths:
+  - name: app.conf
+    path: /etc/demo-app/app.conf
+    template: app.conf.j2
 app_port: 8443
 app_ssl: true
 app_log_level: info
