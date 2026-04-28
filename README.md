@@ -106,7 +106,7 @@ A custom callback plugin is used to:
 The plugin writes the execution report to:
 
 ```text
-reports/report.json
+reports/report_20260428_190602.json
 ```
 
 ---
