@@ -1,0 +1,15 @@
+{
+  "started_at": "2026-04-28T18:50:46.084257Z",
+  "finished_at": "2026-04-28T18:50:50.471694Z",
+  "changed": [
+    {
+      "host": "192.168.122.31",
+      "task": "Ensure application configuration is compliant",
+      "status": "changed",
+      "before": "",
+      "after": "port=8443\nssl=true\nlog_level=info\n"
+    }
+  ],
+  "failed": [],
+  "unreachable": []
+}

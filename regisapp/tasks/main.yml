@@ -18,7 +18,7 @@
     state: directory
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: '0750'
+    mode: "{{ app_dir_mode }}"
 - name: Check if config file exists
   stat:
     path: "{{ app_config_path }}"
@@ -42,7 +42,7 @@
     dest: "{{ app_config_path }}"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: '0640'
+    mode: "{{ app_file_mode }}" 
   register: app_conf_result
 - name: Read config after remediation
   slurp:
@@ -51,6 +51,11 @@
 - name: Set after content
   set_fact:
     app_conf_after_content: "{{ app_conf_after.content | b64decode }}"
-- name: Set drift flag
+- name: Build configuration drift report data
   set_fact:
-    app_conf_drifted: "{{ app_conf_before_content != app_conf_after_content }}"
+    app_conf_report:
+      host: "{{ inventory_hostname }}"
+      task: "Ensure application configuration is compliant"
+      drifted: "{{ app_conf_before_content != app_conf_after_content }}"
+      before: "{{ app_conf_before_content }}"
+      after: "{{ app_conf_after_content }}"
