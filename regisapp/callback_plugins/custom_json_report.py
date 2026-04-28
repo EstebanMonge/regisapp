@@ -66,6 +66,8 @@ class CallbackModule(CallbackBase):
         self.report["finished_at"] = datetime.utcnow().isoformat() + "Z"
 
         os.makedirs("reports", exist_ok=True)
+        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        report_file = f"reports/report_{timestamp}.json"
 
-        with open("reports/report.json", "w") as f:
+        with open(report_file, "w") as f:
             json.dump(self.report, f, indent=2)
