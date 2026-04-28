@@ -1,3 +1,3 @@
-port={{ app_port }}
-ssl={{ app_ssl | lower }}
-log_level={{ app_log_level | lower }}
+port={{ app_config.config.port }}
+ssl={{ app_config.config.ssl | lower }}
+log_level={{ app_config.config.log_level | lower }}

@@ -21,10 +21,10 @@
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
     mode: "{{ app_dir_mode }}"
-  loop: "{{ app_config_paths }}"
+  loop: "{{ app_configs }}"
 
 - name: Manage configuration files
   include_tasks: manage_config.yml
-  loop: "{{ app_config_paths }}"
+  loop: "{{ app_configs }}"
   loop_control:
     loop_var: app_config
