@@ -1,0 +1,24 @@
+{
+  "started_at": "2026-04-28T22:51:38.633535Z",
+  "finished_at": "2026-04-28T22:51:42.842241Z",
+  "changed": [
+    {
+      "host": "192.168.122.89",
+      "task": "Ensure application configuration is compliant",
+      "status": "changed",
+      "config_file": "/etc/demo-app/app.conf",
+      "before": "",
+      "after": "port=8443\nssl=true\nlog_level=info\n"
+    },
+    {
+      "host": "192.168.122.31",
+      "task": "Ensure application configuration is compliant",
+      "status": "changed",
+      "config_file": "/etc/demo-app/app.conf",
+      "before": "",
+      "after": "port=8443\nssl=true\nlog_level=info\n"
+    }
+  ],
+  "failed": [],
+  "unreachable": []
+}
