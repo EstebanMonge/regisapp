@@ -1,0 +1,56 @@
+---
+# tasks file for regisapp
+- name: Ensure application group exists
+  group:
+    name: "{{ app_group }}"
+    system: yes
+  when: app_create_user
+- name: Ensure application user exists
+  user:
+    name: "{{ app_user }}"
+    group: "{{ app_group }}"
+    system: yes
+    create_home: no
+  when: app_create_user
+- name: Ensure config directory exists
+  file:
+    path: "{{ app_config_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0750'
+- name: Check if config file exists
+  stat:
+    path: "{{ app_config_path }}"
+  register: app_conf_stat
+- name: Read current config (before)
+  slurp:
+    path: "{{ app_config_path }}"
+  register: app_conf_before
+  when: app_conf_stat.stat.exists
+- name: Set before content
+  set_fact:
+    app_conf_before_content: >-
+      {{
+        (app_conf_before.content | b64decode)
+        if app_conf_stat.stat.exists
+        else ''
+      }}
+- name: Ensure application configuration is compliant
+  template:
+    src: app.conf.j2
+    dest: "{{ app_config_path }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0640'
+  register: app_conf_result
+- name: Read config after remediation
+  slurp:
+    path: "{{ app_config_path }}"
+  register: app_conf_after
+- name: Set after content
+  set_fact:
+    app_conf_after_content: "{{ app_conf_after.content | b64decode }}"
+- name: Set drift flag
+  set_fact:
+    app_conf_drifted: "{{ app_conf_before_content != app_conf_after_content }}"

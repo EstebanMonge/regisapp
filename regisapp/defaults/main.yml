@@ -1,0 +1,10 @@
+---
+# defaults file for regisapp
+app_user: regisapp
+app_group: regisapp
+app_config_path: /etc/demo-app/app.conf
+app_config_dir: /etc/demo-app/
+app_port: 8443
+app_ssl: true
+app_log_level: info
+app_create_user: true
